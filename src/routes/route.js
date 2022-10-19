@@ -1,3 +1,4 @@
+const { count } = require('console');
 const express = require('express');
 const router = express.Router();
 
@@ -70,4 +71,56 @@ router.post("/test-post-4", function(req, res) {
     res.send(  { msg: arr , status: true }  )
 })
 
+let players = [{
+    "name": "manish",
+    "dob": "1/1/1995",
+    "gender": "male",
+    "city": "jalandhar",
+    "sports": ["swimming"]
+    },
+    {
+        "name": "lokesh",
+        "dob": "1/1/1990",
+        "gender": "male",
+        "city": "mumbai",
+        "sports": [
+            "soccer"
+        ]
+    }
+]
+
+// router.post('/players', function (req, res) {
+ 
+//     //LOGIC WILL COME HERE
+//     let element = req.body.element
+//     players.push(element)
+//     console.log({ data: players , status: true } )
+//     res.send(  { data: players , status: true } )
+// })
+
+router.post('/players', function (req, res) {
+ 
+    //LOGIC WILL COME HERE
+    let element = req.body.element
+    console.log(element.name)
+    let count = 0
+    for(let i = 0 ; i<players.length ; i++){
+        console.log(players[i].name + "=" + element.name)
+        if(players[i].name == element.name){
+            count = count + 1
+        }
+    }
+
+    if(count==1){
+        console.log('The data of a player with a name that already exists in the data')
+        res.send('the data of a player with a name that already exists in the data')
+    }
+    else{
+        players.push(element)
+        console.log({ data: players , status: true } )
+        res.send(  { data: players , status: true } )
+    }
+})
+ 
+    
 module.exports = router;
