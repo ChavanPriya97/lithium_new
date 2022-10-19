@@ -89,6 +89,7 @@ let players = [{
     }
 ]
 
+//que 1 that saves a new player’s details
 // router.post('/players', function (req, res) {
  
 //     //LOGIC WILL COME HERE
@@ -97,6 +98,11 @@ let players = [{
 //     console.log({ data: players , status: true } )
 //     res.send(  { data: players , status: true } )
 // })
+
+
+//que 2 Write a POST /players api that creates a new player
+//  ( i.e. that saves a player’s details and doesn’t
+//  allow saving the data of a player with a name that already exists in the data)
 
 router.post('/players', function (req, res) {
  
