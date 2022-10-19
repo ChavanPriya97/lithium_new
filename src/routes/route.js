@@ -1,8 +1,11 @@
 const express = require('express');
 const myHelper = require('../util/helper')
 const underscore = require('underscore')
+const missnum1 = require('../dsa/dsa1.js')
+const missnum2 = require('../dsa/dsa2.js')
 
 const router = express.Router();
+const app = express.Router() ;
 
 router.get('/test-me', function (req, res) {
     myHelper.printDate()
@@ -103,5 +106,28 @@ router.get("/films/:filmId", function(req, res){
        res.send("The film id doesn't match any movie")
 })
 
+app.get("/sol1", function (req, res) {
+    //logic : sum of numbers is n(n+1)/2..so get sum of all numbers in array. now take sum of
+    // numbers till last digit in the array
+
+    console.log(missnum1.missingNumber())
+
+    let missingNumber1 = missnum1.missingNumber() 
+    
+    res.send( { data: missingNumber1 } );
+    });
+
+
+app.get("/sol2", function (req, res) {
+    //logic : sum of n consecutive numbers is [ n * (first + last) / 2 ]..so get sum of all
+    // numbers in array. now take sum of n consecutive numbers.. n would be length+1 as 1 number is missing
+    console.log(missnum2.missingNumber())
+
+    let missingNumber2 = missnum2.missingNumber() 
+    res.send( { data: missingNumber2 } );
+    });
+    
+
 module.exports = router;
+module.exports = app ;
 // adding this comment for no reason
