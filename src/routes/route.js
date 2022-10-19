@@ -126,8 +126,6 @@ app.get("/sol2", function (req, res) {
     let missingNumber2 = missnum2.missingNumber() 
     res.send( { data: missingNumber2 } );
     });
-    
-
 module.exports = router;
 module.exports = app ;
 // adding this comment for no reason

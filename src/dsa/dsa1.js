@@ -4,7 +4,7 @@ let missingNumber = function(){
     let sum =0  
     let num = arr.length + 1
     let sumofnum = (num *(num+1))/2
-    // console.log(num)
+    // console.log(sumofnum)
     for(let i = 0 ;i<arr.length ;i++){
         sum = sum + arr[i]
     }
