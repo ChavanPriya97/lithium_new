@@ -11,9 +11,18 @@ router.get("/test-me", function (req, res) {
 router.post("/createUser", UserController.createUser  )
 
 router.get("/getUsersData", UserController.getUsersData)
-
+//1.
 router.post("/createBook", BookController.createBook  )
-
 router.get("/getBooksData", BookController.getBooksData)
+//2.
+router.get("/booklist",BookController.booklist)
+//3.
+router.post("/getBooksInyear",BookController.getBooksInyear)
+//4.
+router.get("/getParticularBooks",BookController.getParticularBooks)
+//5.
+router.get("/getXINRBooks",BookController.getXINRBooks)
+//6.
+router.get("/getRandamBooks",BookController.getRandamBooks)
 
 module.exports = router;
