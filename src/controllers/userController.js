@@ -1,8 +1,5 @@
 const UserModel= require("../models/userModel")
 
-
-
-
 const basicCode= async function(req, res) {
     let tokenDataInHeaders= req.headers.token
     console.log(tokenDataInHeaders)
@@ -13,34 +10,35 @@ const basicCode= async function(req, res) {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const createUser= async function (req, res) {
-    let data= req.body
-    let savedData= await UserModel.create(data)
-    res.send({msg: savedData})
+        let data= req.body
+        let savedData= await UserModel.create(data)
+        res.send({msg: savedData})
+    }
+    
+const getUsersData= async function (req, res) {
+        let allUsers= await UserModel.find()
+        res.send({msg: allUsers})
+    }
+
+
+const newUser = async function(req,res){
+    res.send({msg : "This is coming from controller handler createUser "})
 }
 
-const getUsersData= async function (req, res) {
-    let allUsers= await UserModel.find()
-    res.send({msg: allUsers})
+const basicAPI = async function(req,res){
+    res.send({msg : "This is coming from controller handler basicAPi "})
 }
+
+const testAPI = async function(req,res){
+    res.send({msg : "This is coming from controller handler testAPI "})
+}
+
 
 module.exports.createUser= createUser
 module.exports.getUsersData= getUsersData
 module.exports.basicCode= basicCode
+
+module.exports.newUser = newUser
+module.exports.basicAPI =basicAPI
+module.exports.testAPI = testAPI
