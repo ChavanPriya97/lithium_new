@@ -1,15 +1,15 @@
 const productModel = require("../models/productModel")
 
 const createProduct = async function(req,res){
-    let product = req.body
+    const product = req.body
 
-    let productCreated = await productModel.create(product)
+    const productCreated = await productModel.create(product)
 
     res.send({data : productCreated})
 }
 
 const getProductData = async function(req, res){
-    let productDetail = await productModel.find()
+    const productDetail = await productModel.find()
 
     res.send({data : productDetail })
 }

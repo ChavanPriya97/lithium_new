@@ -15,7 +15,8 @@ const orderSchema = new mongoose.Schema({
     },
     amount : Number,
     isFreeAppUser:{
-        type :Booolean
+        type :Boolean,
+        default : false
     } ,
     date :{
         type : Date
@@ -24,4 +25,4 @@ const orderSchema = new mongoose.Schema({
 })
 
 
-module.exports = mongoose.Model('Order',orderSchema)
+module.exports = mongoose.model('Order',orderSchema)

@@ -18,7 +18,8 @@ const userMidSchema = new mongoose.Schema( {
     },
     isFreeAppUser :{
         type : Boolean,
-        default : false
+        default : false,
+        required :true
     }
 }, { timestamps: true });
 

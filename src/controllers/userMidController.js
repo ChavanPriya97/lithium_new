@@ -1,9 +1,8 @@
 const userMidModel = require("../models/userMidModel")
 
-const createUser = async function(req,res){
+const createUser1 = async function(req,res){
     let user = req.body
-
-    let userCreated = await userMidModel.create(user)
+    const userCreated = await userMidModel.create(user)
     res.send({data : userCreated })
 
 }
@@ -15,5 +14,5 @@ const getUserData = async function(req,res){
 
 }
 
-module.exports.createUser = createUser
+module.exports.createUser1 = createUser1
 module.exports.getUserData = getUserData
