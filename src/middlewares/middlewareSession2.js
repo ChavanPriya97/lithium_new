@@ -4,17 +4,19 @@ const newmiddleware = function(req, res, next){
     // Setting an attribute 'isFreeAppUser' in request
     // The header value comparison is done once and
     // the result can be used directly wherever required.
-    const body = req.body
-    const headers = req.headers
-    const freeUser = headers.isfreeappuser
-
-    if(freeUser) {
-        console.log("Free App User header is added Successfully")  
+    let header =req.headers.isfreeappuser
+    const newHeader = header=="true" ? true :false
+    const isFreeAppUser = req.isFreeAppUser=newHeader
+        
+    if(header)
+    {
+        console.log("your header is added successfully")
         next()
     }
-    else{
-        console.log("Free App User header is not added")  
-        return res.send({data : "Free App User header is Required"})
+    else
+    {
+        console.log("set your header isfreeappuser is required")
+        res.send({headermsg:"request is missing a mandatory header"})
     }
 }
 
@@ -31,9 +33,9 @@ const middlewareForId = function(req,res,next){
         return res.send({data : "productId is not valid"})
     }
 
-    if((!isValidObjectId(userId)) && (!isValidObjectId(productId))){
-        return res.send({data : "userId and productId is not valid"})
-    }
+    // if((!isValidObjectId(userId)) && (!isValidObjectId(productId))){
+    //     return res.send({data : "userId and productId is not valid"})
+    // }
 
     next()
 }

@@ -1,110 +1,81 @@
 const orderModel = require("../models/orderModel")
-
-const userController = require("../controllers/userMidController")
-
-const productController = require("../controllers/productController")
-const userMidModel = require("../models/userMidModel")
+const userModel = require("../models/userMidModel")
 const productModel = require("../models/productModel")
 
+// const createOrder = async function(req,res){
+//     const order = req.body
+//     const header = req.header
+
+//     const orderCreated = await orderModel.create(order)
+//     res.send({data : orderCreated })
+// }
+
 const createOrder = async function(req,res){
-    const order = req.body
-    const header = req.header
-
-    const orderCreated = await orderModel.create(order)
-    res.send({data : orderCreated })
-}
-
-const createOrder1 = async function(req ,res){
-    const order = req.body
-    const header = req.header
-
-    let countuser = 0
-    let countproduct = 0
-    //userId is valid or not
-    if(order.userId){
-        const userData = await userMidModel.find()
-
-        userData.forEach(el =>{
-            if(el._id == order.userId){
-                countuser++
+    let data= req.body
+    let count=0
+    let count1=0
+    let isFreeAppUser = req.isFreeAppUser
+    if(data.userId){
+        const userdata= await userModel.find()
+        userdata.forEach(el =>{
+            if(el._id==data.userId){
+                count++
             }
         })
     }else{
         console.log("the required key of userId is not present")
         return res.send({msg:"the required key of userId is not present"})
     }
-    //productId is valid or not
-    if(order.productId){
-        const productData = await productModel.find()
-
-        productData.forEach(el =>{
-            if(el._id == order.productId){
-                countproduct++
+    if(data.productId){
+        const productdata= await productModel.find()
+        productdata.forEach(el =>{
+            if(el._id==data.productId){
+                count1++
             }
         })
     }else{
         console.log("the required key of productId is not present")
-        return res.send({msg:"the required key of productId is not present"})
+        return  res.send({msg:"the required key of productId is not present"})
     }
-    //check userId and productId valid or Not
-    if(countuser==0 && countproduct>0){
+    if(count==0 && count1>0){
         console.log("id is invalid for userId")
         res.send({msg:"id is invalid for userId"})
-    }
-    else if(countuser>0 && countproduct==0){
+    }else if(count>0 && count1==0){
         console.log("id is invalid for productId")
         res.send({msg:"id is invalid for productId"})
-    }
-    else if(countuser==0 && countproduct==0){
+    }else if(count==0 && count1==0){
         console.log("id is invalid for productId and userId key")
         res.send({msg:"id is invalid for productId and userId key"})
-    }
-    else{
-        //If both are Valid then  task is start
-        //isfreeappuser is "true"
-        if(req.headers.isfreeappuser=="true"){
-            //set amount = 0  and isFreeAppUser=true
-            order.amount=0
-            order.isFreeAppUser=true 
-            //create new order
-            const orderCreated = await orderModel.create(order)
-            res.send({data : orderCreated })
+    }else{
+        if(isFreeAppUser){
+            data.amount=0
+            data.isFreeAppUser=true 
+            const fetchOrder= await orderModel.create(data)
+            res.send({msg:fetchOrder})
+        }else{
+            data.isFreeAppUser=false
+            const userfetch= await userModel.findOne({_id:data.userId})
+            let userbal= userfetch.balance
+            const productfetch= await productModel.findOne({_id:data.productId})
+            let prodprice= productfetch.price
+            if(userbal>=prodprice){
+            data.amount=prodprice
+            let newbal= userbal - prodprice
+            const userfetch= await userModel.findOneAndUpdate({_id:data.userId},{balance:newbal},{new:true})
+            const fetchOrder= await orderModel.create(data)
+            res.send({msg:fetchOrder})
             }
-        //isfreeappuser is not equal to "true"
-        else{
-            //set isFreeAppUser=false
-            order.isFreeAppUser=false
-            //find userId of order is match with usermodel _id then userbalanace
-            const userData = await userMidModel.findOne({_id:order.userId})
-            let userBalance = userData.balance
-            //find productId of order is match with productmodel _id then productPrice
-            const productData = await productModel.findOne({_id:order.productId})
-            let productprice= productData.price
-
-            //check userBalance is greater than productPrice then set order amount
-            if(userBalance>productprice){
-                order.amount = productprice//30
-                //updated Balance to usermModel balance
-                let newBalance =  userBalance - productprice //100-30 =70
-                const userData= await userMidModel.findOneAndUpdate(
-                                        {_id:order.userId},
-                                        {balance:newBalance},
-                                        {new:true})
-                const orderCreated = await orderModel.create(order)
-                res.send({data : orderCreated })
-                }
             else{
-
                 console.log("doesn't have an enough balance in user collection")
                 res.send({msg:"doesn't have an enough balance in user collection"})
             }
+           
         }
+        
     }
-            
-   
-    
-
 }
+
+module.exports.createOrder = createOrder
 
 const getOrderData = async function (req, res) {
     const orders = await orderModel.find()
@@ -117,7 +88,6 @@ const getOrderWithProductAndUserDetails = async function(req,res){
 }
       
 
-module.exports.createOrder1 = createOrder1
 module.exports.createOrder = createOrder
 module.exports.getOrderData = getOrderData
 module.exports.getOrderWithProductAndUserDetails = getOrderWithProductAndUserDetails

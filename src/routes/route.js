@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const UserController= require("../controllers/userController")
-const BookController= require("../controllers/bookController")
-const commonMW = require ("../middlewares/commonMiddlewares")
+// const UserController= require("../controllers/userController")
+// const BookController= require("../controllers/bookController")
+// const commonMW = require ("../middlewares/commonMiddlewares")
 //user Controller
 const userMidController = require("../controllers/userMidController")
 //product Controller
@@ -42,8 +42,6 @@ router.get("/getProductData",productController.getProductData)
 
 //Order Api for create order
 router.post("/createOrder",middleware2.newmiddleware,middleware2.middlewareForId, orderController.createOrder )
-//order Api where its free appuser or not and check balance of user then placed order
-router.post("/createOrder1", orderController.createOrder1 )
 //get Orders
 router.get("/getOrderData",orderController.getOrderData)
 
