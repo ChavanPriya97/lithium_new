@@ -4,37 +4,51 @@ const authenticate =  async function(req,res,next){
 
     //check the token in request header
     //validate this token
-    let token = req.headers["x-Auth-token"];
-    console.log(token)
-    if (!token) token = req.headers["x-auth-token"];
-    console.log(token)
-    if(token){
-        console.log("token successfully added " ,token);
+    try{
+        let token = req.headers["x-Auth-token"];
+        console.log(token)
+        if (!token) token = req.headers["x-auth-token"];
+        console.log(token)
+        if(token){
+            console.log("token successfully added " ,token);
 
-        let decodedToken = jwt.verify(token, "Lithium-Authentication-Token");
-        console.log(decodedToken)
-        req.userId = decodedToken.userId
-        if (!decodedToken) return res.send({ status: false, msg: "token is invalid" });
-        
-        next()
+            let decodedToken = jwt.verify(token, "Lithium-Authentication-Token");
+            console.log(decodedToken)
+            req.userId = decodedToken.userId
+            if (!decodedToken) return res.ststus(401).send({ status: false, msg: "token is invalid" })
+            
+            next()
+        }
+        else{
+            console.log("x-Auth-token key must be present")
+            return res.status(401).send({msg: "x-Auth-token key must be present" });
+        }
     }
-    else{
-        console.log("x-Auth-token key must be present")
-        return res.send({msg: "x-Auth-token key must be present" });
-    }
-   
-    
+    catch(error){
+        console.log("This is the error:",error.message)
+
+        res.status(500).send({msg : "Error Message", error : error.message})
+    } 
 }
 
 const authorise = function(req, res, next) {
+    try{
 
-    let userLoggedIn = req.userId
+        let userLoggedIn = req.userId
+        let userToBeModified = req.params.userId
+        if(userToBeModified != userLoggedIn) return res.status(403).send({status: false, msg: 'User logged is not allowed to modify the requested users data'})
+        next()
 
-    let userToBeModified = req.params.userId
+        }
+    catch(error){
 
-    if(userToBeModified != userLoggedIn) return res.send({status: false, msg: 'User logged is not allowed to modify the requested users data'})
+        console.log("This is the error:",error.message)
 
-    next()
+        res.status(500).send({msg : "Error Message", error : error.message})
+        
+    }
+
+    
 }
 
 
