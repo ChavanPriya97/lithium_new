@@ -37,9 +37,8 @@ router.get("/weather/sortCityUsingTemp",weatherController.sortCityUsingTemp)
 
 //get All memes data
 router.post("/memes/getMemesData",memesController.getMemesData)
-
-router.post("/memes/getMemesById",memesController.getMemesById)
-
+//create memes 
+router.post("/memes/createdMemes",memesController.createdMemes)
 // WRITE A GET API TO GET THE LIST OF ALL THE "vaccination sessions by district id" for any given district id and for any given date
 
 module.exports = router;
